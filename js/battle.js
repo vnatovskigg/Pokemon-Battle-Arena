@@ -1,5 +1,5 @@
 import Player from "./player.js";
-import { createHTMLElement, appendChildrenToParent } from "./utils.js";
+import { createHTMLElement } from "./utils.js";
 
 export default class Battle {
   constructor(player, enemy, pokemonList) {
@@ -7,30 +7,24 @@ export default class Battle {
     this.enemy = enemy;
     this.pokemonList = pokemonList;
     this.song = new Audio("../assets/battle.mp3");
+    this.battle = true;
   }
 
   startGame() {
     this.song.volume = 0.4;
     this.song.play();
-    this.song.addEventListener(
-      "ended",
-      function () {
-        this.currentTime = 0;
-        this.play();
-      },
-      false
-    );
+    this.song.addEventListener("ended", function () {
+      this.currentTime = 0;
+      this.play();
+    });
 
     const playerDiv = document.querySelector(".playerDiv .player");
-    this.fightBtn = createHTMLElement("button", "fight-btn", "Attack");
-    this.fightBtn.addEventListener("click", () =>
-      this.playRound(this.player, this.enemy)
-    );
+    this.fightBtn = createHTMLElement("button", "fight-btn", "Start");
+    this.fightBtn.addEventListener("click", () => {
+      this.playRound(this.player, this.enemy);
+    });
 
     playerDiv.appendChild(this.fightBtn);
-
-    console.log("Initial player hp:  ", this.player.hp);
-    console.log("Initial enemy hp:  ", this.enemy.hp);
   }
 
   playRound(player, enemy) {
@@ -54,8 +48,11 @@ export default class Battle {
     }
 
     setTimeout(() => {
-      this.fightBtn.disabled = false;
-      this.checkWin();
+      // this.fightBtn.disabled = false;
+      let end = this.checkWin();
+      if (!end) {
+        this.playRound(this.player, this.enemy);
+      }
     }, 6000);
   }
 
@@ -84,7 +81,9 @@ export default class Battle {
       );
       this.switchOpponent.addEventListener("click", () => this.nextOpponent());
       playerDiv.appendChild(this.switchOpponent);
+      return true;
     }
+    return false;
   }
 
   rematch() {
@@ -98,7 +97,7 @@ export default class Battle {
     this.enemy.hp = this.enemy.maxHp;
     this.enemy.renderPlayer();
 
-    const rematchGame = new Battle(this.player, this.enemy);
+    const rematchGame = new Battle(this.player, this.enemy, this.pokemonList);
     rematchGame.startGame();
   }
 

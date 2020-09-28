@@ -1,6 +1,6 @@
 import Player from "./player.js";
 import Battle from "./battle.js";
-import { createHTMLElement, appendChildrenToParent } from "./utils.js";
+import { createHTMLElement } from "./utils.js";
 
 export default class Arena {
   constructor(player, pokemonList) {

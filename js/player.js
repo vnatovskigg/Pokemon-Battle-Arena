@@ -27,17 +27,19 @@ export default class Player {
       "div",
       `health-bar-holder-${this.type}`
     );
-    const bar = createHTMLElement("div", `health-bar`);
-    healthbarHolder.appendChild(bar);
+
     this.healthbar = new Healthbar(
       healthbarHolder,
       this.hp,
       this.hp,
       this.type
     );
+    this.healthbar.initiate();
 
     const sprite = createHTMLElement("img");
     sprite.src = this.sprite;
+    sprite.style.transition = "all 0.5s ease";
+
     let children = [];
 
     if (this.type === "enemy") {
@@ -59,35 +61,49 @@ export default class Player {
 
   attack(enemy) {
     let damageMultiplier = Math.floor(Math.random() * 20);
-    let damage = (this.dmg / enemy.def) * damageMultiplier;
+    let damage = Math.round((this.dmg / enemy.def) * damageMultiplier);
 
     if (damage > 0) {
-      this.attackAnimation();
-      this.hitSound.volume = 1;
+      this.attackAnimation(this.type);
+
+      if (enemy.type === "enemy") {
+        this.hitAnimation(enemy);
+      }
+
       this.hitSound.play();
     } else {
-      alert("Attack Missed");
+      alert(`${this.name} Missed an Attack`);
     }
 
     enemy.hp -= damage;
     enemy.healthbar.update(damage);
   }
 
-  attackAnimation() {
-    if (this.type === "player") {
-      const playerSprite = document.querySelector(".playerDiv .player img");
-      playerSprite.style.transition = "all 0.5s ease";
-      playerSprite.style.transform = "translateY(-200%)";
+  attackAnimation(type) {
+    const playerSprite = document.querySelector(`.${type}Div .player img`);
+
+    playerSprite.style.transform =
+      type === "player" ? "translateY(-180%)" : "translateY(180%)";
+    setTimeout(() => {
+      playerSprite.style.transform = "translateY(0)";
+    }, 2000);
+  }
+
+  hitAnimation(target) {
+    const targetSprite = document.querySelector("img");
+
+    let animation = setInterval(flicker, 401);
+
+    setTimeout(() => {
+      clearInterval(animation);
+    }, 1203);
+
+    function flicker() {
+      targetSprite.style.transition = "500ms ease";
+      targetSprite.style.opacity = "0.3";
       setTimeout(() => {
-        playerSprite.style.transform = "translateY(0)";
-      }, 2000);
-    } else {
-      const enemySprite = document.querySelector(".enemyDiv .player img");
-      enemySprite.style.transition = "all 0.5s ease";
-      enemySprite.style.transform = "translateY(200%)";
-      setTimeout(() => {
-        enemySprite.style.transform = "translateY(0)";
-      }, 2000);
+        targetSprite.style.opacity = "1";
+      }, 200);
     }
   }
 }

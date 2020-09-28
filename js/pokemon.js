@@ -46,7 +46,13 @@ export default class Pokemon {
     moves = moves.splice(0, 4);
 
     let fighterDiv = createHTMLElement("div", "fighter");
-    const img = createHTMLElement("img", null, null, [{ k: "src", v: imgUrl }]);
+
+    // Draw image
+
+    const img = createHTMLElement("img");
+    img.src = imgUrl;
+
+    //
     const pokeName = createHTMLElement("span", "pokeName", name);
     const abilitySpan = createHTMLElement("span", null, `Ability: ${ability}`);
     abilitySpan.style["text-transform"] = "capitalize";

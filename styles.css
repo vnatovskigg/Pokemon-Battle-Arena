@@ -55,6 +55,11 @@
   transition: 0.1s ease-in-out;
 }
 
+.fighter img {
+  width: 130px;
+  align-self: center;
+}
+
 .fighter:hover {
   cursor: pointer;
   transform: translate(2%, -2%);
@@ -69,11 +74,6 @@
 .fighter span {
   margin-top: 1%;
   font-size: 13pt;
-}
-
-.fighter img {
-  width: 120px;
-  align-self: center;
 }
 
 .pokeName {
@@ -134,23 +134,14 @@
 }
 
 .health-bar-holder-enemy {
-  width: 130px;
-  height: 10px;
-  border: 1px solid #fff;
+  padding: 0;
+  /* border: 1px solid #fff; */
 }
 
 .health-bar-holder-player {
+  padding: 0;
   margin-bottom: 5%;
-  width: 130px;
-  height: 10px;
-  border: 1px solid #fff;
-}
-
-.health-bar {
-  height: 100%;
-  width: 100%;
-  background-color: #59ea63;
-  transition: width 0.5s;
+  /* border: 1px solid #fff; */
 }
 
 button {

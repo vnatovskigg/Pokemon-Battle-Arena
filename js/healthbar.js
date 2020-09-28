@@ -1,37 +1,45 @@
+import { drawHealthbar, createHTMLElement } from "./utils.js";
+
 export default class Healthbar {
   constructor(holder, hp, maxHp, type) {
     this.hp = hp;
     this.maxHp = maxHp;
     this.type = type;
-    this.bar = holder.querySelector(".health-bar");
+    this.bar = createHTMLElement("canvas");
+    this.ctx = this.bar.getContext("2d");
+    this.holder = holder;
     // this.setValue(100);
   }
 
-  setValue(newValue) {
-    if (newValue < 0) {
-      newValue = 0;
-    }
+  initiate() {
+    this.bar.width = 130;
+    this.bar.height = 15;
 
-    if (newValue > 100) {
-      newValue = 100;
-    }
-
-    this.value = newValue;
+    this.holder.appendChild(this.bar);
+    drawHealthbar(
+      this.ctx,
+      0,
+      0,
+      this.bar.width,
+      this.bar.height,
+      this.hp,
+      this.maxHp
+    );
   }
 
   update(damage) {
     this.hp -= damage;
-    const percentLeft = (this.hp / this.maxHp) * 100;
-    this.setValue(percentLeft);
 
-    this.bar.style.width = this.value + "%";
-
-    if (percentLeft <= 50) {
-      this.bar.style["background-color"] = "#f2ba14";
-    }
-
-    if (percentLeft <= 10) {
-      this.bar.style["background-color"] = "#ce2827";
-    }
+    setTimeout(() => {
+      drawHealthbar(
+        this.ctx,
+        0,
+        0,
+        this.bar.width,
+        this.bar.height,
+        this.hp,
+        this.maxHp
+      );
+    }, 1600);
   }
 }
