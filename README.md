@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Boost Interview Task :rocket:	
 
 
@@ -63,3 +64,6 @@
 - Display more than the 20 pokemon required	
 - Use the sounds provided in the assets folder during the battle	
 - Use GSAP
+=======
+Check out the app on Netlify https://gracious-hodgkin-34e545.netlify.app
+>>>>>>> 4688158c6accf8b7dbd3925e0b9c25d6033911b0
